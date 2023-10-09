@@ -12,6 +12,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: ':surahId', element: <Surah /> },
     ],
   },
 ]);
