@@ -3,16 +3,20 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { Layout } from './layout/Layout';
 
-import HomePage from './pages/Home';
-import Surah from './pages/Surah';
+import HomePage, { loader as homeLoader } from './pages/Home';
+import Surah, { loader as surahLoader } from './pages/Surah';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
     children: [
-      { index: true, element: <HomePage /> },
-      { path: ':surahId', element: <Surah /> },
+      { index: true, element: <HomePage />, loader: homeLoader },
+      {
+        path: ':surahId',
+        element: <Surah />,
+        loader: surahLoader,
+      },
     ],
   },
 ]);
@@ -22,4 +26,3 @@ const App = () => {
 };
 
 export default App;
-

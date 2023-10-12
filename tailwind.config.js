@@ -14,6 +14,12 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        uthmainc: ['uthmanicHafs', 'sans-serif'],
+        meQuran: ['meQuran', 'sans-serif'],
+        nastaleeq: ['nastaleeq', 'sans-serif'],
+        surahNames: ['surahNames', 'sans-serif'],
+      },
       colors: {
         primary: '#2ca4ab',
       },
@@ -21,4 +27,3 @@ module.exports = {
   },
   plugins: [],
 };
-
