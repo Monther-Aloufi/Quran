@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: 'uthmanicHafs';
-  src: url('/src/public/fonts/quran/hafs/uthmanic_hafs/UthmanicHafs1Ver18.ttf')
+  src: url('/src/public/fonts/quran/hafs/uthmanic_hafs/UthmanicHafs1Ver18.woff2')
     format('truetype');
   font-weight: normal;
   font-style: normal;
@@ -44,4 +44,8 @@
 
 .centerPage:first-of-type .line {
   justify-content: center;
+}
+
+.justifyPage .line {
+  justify-content: space-between;
 }

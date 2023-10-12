@@ -1,7 +1,4 @@
 import { useLoaderData } from 'react-router';
-import React, { useState, useEffect } from 'react';
-
-import axios from 'axios';
 
 import Header from '../components/Header';
 import SurahCard from '../util/surahCard';
@@ -9,22 +6,6 @@ import '../styles/tailwind.css';
 
 const HomePage = () => {
   const data = useLoaderData();
-  // const [data, setData] = useState([]);
-
-  // useEffect(() => {
-  //   axios.get('https://api.quran.com/api/v4/chapters?language=en').then(res => {
-  //     setData(res.data.chapters);
-  //   });
-  //   axios
-  //     .get(
-  //       'https://api.quran.com/api/v4/verses/by_chapter/1?language=en&words=true&page=1&per_page=10',
-  //     )
-  //     .then(res => {
-  //       console.log('ssss', res.data.verses);
-  //     });
-  // }, []);
-
-  console.log(data);
 
   return (
     <div>
@@ -47,13 +28,13 @@ const HomePage = () => {
 
 export default HomePage;
 
-export const loader = async ({ request }) => {
+export const loader = async () => {
   const response = await fetch(
     'https://api.quran.com/api/v4/chapters?language=en',
   );
 
   if (!response.ok) {
-    throw new Error('Failed to load data');
+    throw new Error('Failed to load chapters');
   } else {
     const data = await response.json();
     return data.chapters;

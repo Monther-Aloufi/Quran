@@ -22,6 +22,11 @@ module.exports = {
       },
       colors: {
         primary: '#2ca4ab',
+        'primary-100': '#e6f7f8',
+        'primary-200': '#b3e7ea',
+        'primary-300': '#80d7dc',
+        'primary-400': '#4dc7ce',
+        'primary-500': '#2ca4ab',
       },
     },
   },
