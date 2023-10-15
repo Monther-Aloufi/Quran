@@ -1,4 +1,4 @@
-import { useParams, useLoaderData } from 'react-router-dom';
+import { useParams, useRouteLoaderData, useNavigation } from 'react-router-dom';
 
 // UTILS
 import { fetchSurahInfo, fetchVersesByPage } from '../api/surahApi';
@@ -14,8 +14,9 @@ import '../styles/tailwind.css';
 import PageNavigationControls from '../components/PageNavigationControls';
 
 const Surah = () => {
-  const { data, name } = useLoaderData();
+  const { data, name } = useRouteLoaderData('surah');
   const { surahId } = useParams();
+  const navigation = useNavigation();
 
   return (
     <div className="flex flex-col justify-center items-center mx-4 my-6 sm:mx-20 sm:my-10 md:mx-36 lg:mx-44 xl:mx-80">
@@ -45,6 +46,8 @@ export const loader = async ({ params }) => {
   let name;
   let startPage, endPage;
   let versesCount;
+  let revelationPlace;
+  let nameSimple;
 
   try {
     const surahInfo = await fetchSurahInfo(surahId);
@@ -52,6 +55,8 @@ export const loader = async ({ params }) => {
     endPage = surahInfo.chapter.pages[1];
     name = surahInfo.chapter.name_arabic;
     versesCount = surahInfo.chapter.verses_count;
+    revelationPlace = surahInfo.chapter.revelation_place;
+    nameSimple = surahInfo.chapter.name_simple;
   } catch (error) {
     throw new Error('Failed to load data');
   }
@@ -67,5 +72,5 @@ export const loader = async ({ params }) => {
       throw new Error('Failed to load data for page ' + i);
     }
   }
-  return { data, name, versesCount };
+  return { data, name, nameSimple, versesCount, revelationPlace };
 };

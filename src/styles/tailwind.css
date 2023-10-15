@@ -34,10 +34,20 @@
   font-style: normal;
 }
 
+/* 
+  --------------------
+  GLOBAL STYLES
+  --------------------
+*/
 .rtl {
   direction: rtl;
 }
 
+/*
+  --------------------
+  PAGE STYLING 
+  --------------------
+*/
 .centerPage .line {
   justify-content: space-between;
 }
@@ -48,4 +58,49 @@
 
 .justifyPage .line {
   justify-content: space-between;
+}
+
+/*
+  --------------------
+  SURAH INFO STYLING 
+  --------------------
+*/
+.surahInfo {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  /* padding: 0 100px; */
+  /* margin: 0 5rem; */
+}
+
+.infoTextBody {
+  font-size: 1rem;
+}
+
+.infoTextBody h2 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.infoTextBody p {
+  margin-bottom: 0.8rem;
+}
+
+.infoTextBody strong {
+  font-weight: 400;
+}
+
+.infoTextBody ol {
+  list-style: decimal;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-left: 2.3rem;
+}
+
+.infoTextBody a {
+  color: #000;
+  text-decoration: underline;
 }
