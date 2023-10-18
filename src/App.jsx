@@ -3,9 +3,9 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import { Layout } from './layout/Layout';
 
-import HomePage, { loader as homeLoader } from './pages/Home';
+import HomePage from './pages/Home';
 import Surah, { loader as surahLoader } from './pages/Surah';
-import SurahInfo, { loader as surahInfoLoader } from './pages/SurahInfo';
+import SurahInfo from './pages/SurahInfo';
 
 const router = createBrowserRouter([
   {
@@ -13,14 +13,14 @@ const router = createBrowserRouter([
     element: <Layout />,
 
     children: [
-      { index: true, element: <HomePage />, loader: homeLoader },
+      { index: true, element: <HomePage /> },
       {
         path: ':surahId',
         id: 'surah',
         loader: surahLoader,
         children: [
           { index: true, element: <Surah /> },
-          { path: 'info', element: <SurahInfo />, loader: surahInfoLoader },
+          { path: 'info', element: <SurahInfo /> },
         ],
       },
     ],

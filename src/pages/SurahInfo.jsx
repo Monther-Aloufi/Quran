@@ -1,5 +1,8 @@
-import { Link, useLoaderData, useRouteLoaderData } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import React from 'react';
+
+// API
+import { fetchSurahDetails, fetchChapterInfo } from '../util/api/surahApi';
 
 // STYLES
 import '../styles/tailwind.css';
@@ -11,21 +14,57 @@ import makkah from '../public/images/makkah.jpg';
 
 // ICONS
 import west from '../public/icons/west.svg';
+import { useQuery } from '@tanstack/react-query';
 
 const SurahInfo = () => {
-  const data = useLoaderData();
-  const { revelationPlace } = useRouteLoaderData('surah');
-  const html = data.text;
+  const { surahId } = useParams();
+  let html;
+  let content;
+
+  const HTMLRender = () => {
+    return { __html: html };
+  };
+
+  const { data: chapterInfo } = useQuery({
+    queryKey: ['surahInfo', surahId],
+    queryFn: () => fetchChapterInfo(surahId),
+  });
+
+  const revelationPlace = chapterInfo?.chapter?.revelation_place;
+
+  const {
+    data: surahInfo,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['surahDetails', surahId],
+    queryFn: () => fetchSurahDetails(surahId),
+  });
+
+  if (isLoading) {
+    content = <h1>Loading...</h1>;
+  }
+
+  if (isError) {
+    content = <h1>{error.message}</h1>;
+  }
+
+  if (surahInfo) {
+    html = surahInfo?.chapter_info?.text;
+    content = (
+      <div className=" w-5/6 ">
+        <InfoHeader />
+        <div className="infoTextBody" dangerouslySetInnerHTML={HTMLRender()} />
+      </div>
+    );
+  }
 
   let image = madinah;
 
   if (revelationPlace === 'makkah') {
     image = makkah;
   }
-
-  const HTMLRender = () => {
-    return { __html: html };
-  };
 
   return (
     <div className="surahInfo px-80 ">
@@ -41,26 +80,9 @@ const SurahInfo = () => {
         </div>
         <img src={image} alt="Makkah" className="w-full rounded-sm" />
       </div>
-      <div className=" w-5/6 ">
-        <InfoHeader />
-        <div className="infoTextBody" dangerouslySetInnerHTML={HTMLRender()} />
-      </div>
+      {content}
     </div>
   );
 };
 
 export default SurahInfo;
-
-export const loader = async ({ params }) => {
-  const { surahId } = params;
-  const response = await fetch(
-    `https://api.quran.com/api/v4/chapters/${surahId}/info?language=en`,
-  );
-
-  if (!response.ok) {
-    throw new Error('Failed to load surah info');
-  } else {
-    const data = await response.json();
-    return data.chapter_info;
-  }
-};

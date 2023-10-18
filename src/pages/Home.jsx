@@ -1,56 +1,56 @@
-import { useLoaderData } from 'react-router-dom';
-import { json } from 'react-router-dom';
-
+// COMPONENTS
 import Header from '../components/Header';
-import SurahCard from '../util/surahCard';
+import SurahCard from '../components/surahCard';
+
+// UTILS
+import { fetchChapters } from '../util/api/surahApi';
+
+// STYLES
 import '../styles/tailwind.css';
-import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
 const HomePage = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const data = useLoaderData();
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['chapters'],
+    queryFn: fetchChapters,
+  });
 
-  useEffect(() => {
-    if (data) {
-      setIsLoading(false);
-    }
-  }, [data]);
+  console.log('data', data);
+
+  let content;
+
+  if (isLoading) {
+    content = <p>Loading...</p>;
+  }
+
+  if (isError) {
+    content = <p>{error.message}</p>;
+  }
+
+  if (data) {
+    const chapters = data.chapters;
+    content = (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 px-40 py-24">
+        {chapters.map(surah => (
+          <SurahCard
+            key={surah.id}
+            id={surah.id}
+            name_simple={surah.name_simple}
+            verses_count={surah.verses_count}
+            name_translations={surah.translated_name.name}
+            name_arabic={surah.name_arabic}
+          />
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div>
       <Header />
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 px-40 py-24">
-          {data.map(surah => (
-            <SurahCard
-              key={surah.id}
-              id={surah.id}
-              name_simple={surah.name_simple}
-              verses_count={surah.verses_count}
-              name_translations={surah.translated_name.name}
-              name_arabic={surah.name_arabic}
-            />
-          ))}
-        </div>
-      )}
+      {content}
     </div>
   );
 };
 
 export default HomePage;
-
-export const loader = async () => {
-  const response = await fetch(
-    'https://api.quran.com/api/v4/chapters?language=en',
-  );
-
-  if (!response.ok) {
-    // throw new Error('Failed to load chapters');
-    return json({ message: 'Failed to load chapters' }, { status: 500 });
-  } else {
-    const data = await response.json();
-    return data.chapters;
-  }
-};

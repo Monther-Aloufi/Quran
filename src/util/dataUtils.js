@@ -1,3 +1,5 @@
+import { fetchVersesByPage } from './api/surahApi';
+
 export const transformVersesToLines = (verses, surahId) => {
   const lines = {};
 
@@ -12,4 +14,20 @@ export const transformVersesToLines = (verses, surahId) => {
   });
 
   return Object.values(lines);
+};
+
+export const fetchPages = async (start, end, surahId) => {
+  const pages = [];
+  for (let i = start; i <= end; i++) {
+    try {
+      const resData = await fetchVersesByPage(i);
+      const arrLines = transformVersesToLines(resData.verses, surahId);
+      if (arrLines) {
+        pages.push([arrLines]);
+      }
+    } catch (error) {
+      throw new Error('Failed to load data for page ' + i);
+    }
+  }
+  return pages;
 };

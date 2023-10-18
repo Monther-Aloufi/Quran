@@ -7,6 +7,7 @@ import profileIcon from '../public/icons/person.svg';
 import searchIcon from '../public/icons/search.svg';
 import languageIcon from '../public/icons/globe.svg';
 import settingsIcon from '../public/icons/settings.svg';
+import { Link } from 'react-router-dom';
 
 const buttonStyle = 'hover:bg-gray-300 py-0.5 px-1 rounded-full xl:p-2';
 
@@ -17,9 +18,9 @@ const Navbar = () => {
         <button className="hover:bg-gray-300 m-2 rounded-full">
           <img src={menuIcon} alt="menu" className=" p-2 w-8 xl:w-10" />
         </button>
-        <a href="/">
+        <Link to="/">
           <img src={quranTextLogo} alt="quran-text-logo" className="w-28 h-8" />
-        </a>
+        </Link>
       </div>
       <div className="flex justify-end items-center gap-1 w-1/6">
         <a href="/" className={buttonStyle}>

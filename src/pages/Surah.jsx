@@ -1,7 +1,8 @@
+import { Suspense, lazy } from 'react';
 import { useParams, useRouteLoaderData, useNavigation } from 'react-router-dom';
 
 // UTILS
-import { fetchSurahInfo, fetchVersesByPage } from '../api/surahApi';
+import { fetchChapterInfo, fetchVersesByPage } from '../util/api/surahApi';
 import { transformVersesToLines } from '../util/dataUtils';
 
 // COMPONENTS
@@ -12,11 +13,31 @@ import Basmalah from '../components/Basmalah';
 // STYLES
 import '../styles/tailwind.css';
 import PageNavigationControls from '../components/PageNavigationControls';
+import { useQuery } from '@tanstack/react-query';
 
 const Surah = () => {
-  const { data, name } = useRouteLoaderData('surah');
   const { surahId } = useParams();
-  const navigation = useNavigation();
+
+  const { data: surahInfo } = useQuery({
+    queryKey: ['surahInfo', surahId],
+    queryFn: () => fetchChapterInfo(surahId),
+  });
+
+  const name = surahInfo?.chapter?.name_arabic;
+
+  const PageRangeToNumbers = () => {
+    if (surahInfo) {
+      const pagesNumbers = [];
+      const startPage = surahInfo?.chapter?.pages[0];
+      const endPage = surahInfo?.chapter?.pages[1];
+      for (let i = startPage; i <= endPage; i++) {
+        pagesNumbers.push(i);
+      }
+      return pagesNumbers;
+    }
+  };
+
+  const pagesNumbers = PageRangeToNumbers();
 
   return (
     <div className="flex flex-col justify-center items-center mx-4 my-6 sm:mx-20 sm:my-10 md:mx-36 lg:mx-44 xl:mx-80">
@@ -29,9 +50,10 @@ const Surah = () => {
       <Basmalah surahId={surahId} />
       <div className=" flex flex-col items-center gap-4">
         <SurahHeader />
-        {data.map((page, index) => (
-          <Page key={index} page={page[0]} surahId={surahId} versesCount />
-        ))}
+        {surahInfo &&
+          pagesNumbers.map(page => (
+            <Page key={page} page={page} surahId={surahId} />
+          ))}
         <PageNavigationControls surahId={surahId} />
       </div>
     </div>
@@ -50,7 +72,7 @@ export const loader = async ({ params }) => {
   let nameSimple;
 
   try {
-    const surahInfo = await fetchSurahInfo(surahId);
+    const surahInfo = await fetchChapterInfo(surahId);
     startPage = surahInfo.chapter.pages[0];
     endPage = surahInfo.chapter.pages[1];
     name = surahInfo.chapter.name_arabic;
