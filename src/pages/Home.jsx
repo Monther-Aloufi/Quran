@@ -1,34 +1,35 @@
-import React, { useState, useEffect } from 'react';
-
-import axios from 'axios';
-
+// COMPONENTS
 import Header from '../components/Header';
-import SurahCard from '../util/surahCard';
+import SurahCard from '../components/surahCard';
+
+// UTILS
+import { fetchChapters } from '../util/api/surahApi';
+
+// STYLES
 import '../styles/tailwind.css';
+import { useQuery } from '@tanstack/react-query';
 
 const HomePage = () => {
-  const [data, setData] = useState([]);
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['chapters'],
+    queryFn: fetchChapters,
+  });
 
-  useEffect(() => {
-    axios.get('https://api.quran.com/api/v4/chapters?language=en').then(res => {
-      setData(res.data.chapters);
-    });
-    axios
-      .get(
-        'https://api.quran.com/api/v4/verses/by_chapter/1?language=en&words=true&page=1&per_page=10',
-      )
-      .then(res => {
-        console.log(res.data.verses);
-      });
-  }, []);
+  let content;
 
-  // console.log(data);
+  if (isLoading) {
+    content = <p>Loading...</p>;
+  }
 
-  return (
-    <div>
-      <Header />
+  if (isError) {
+    content = <p>{error.message}</p>;
+  }
+
+  if (data) {
+    const chapters = data.chapters;
+    content = (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 px-40 py-24">
-        {data.map(surah => (
+        {chapters.map(surah => (
           <SurahCard
             key={surah.id}
             id={surah.id}
@@ -39,6 +40,13 @@ const HomePage = () => {
           />
         ))}
       </div>
+    );
+  }
+
+  return (
+    <div>
+      <Header />
+      {content}
     </div>
   );
 };

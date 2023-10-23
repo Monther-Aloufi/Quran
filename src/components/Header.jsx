@@ -3,7 +3,7 @@ import React from 'react';
 import alquranulKarim from '../public/images/alquranul-karim.svg';
 
 import SearchBar from './SearchBar';
-import LinkButton from '../util/LinkButton';
+import LinkButton from './LinkButton';
 import '../styles/tailwind.css';
 
 const Header = () => {

@@ -1,3 +1,97 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+@font-face {
+  font-family: 'uthmanicHafs';
+  src: url('/src/public/fonts/quran/hafs/uthmanic_hafs/UthmanicHafs1Ver18.woff2')
+    format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'meQuran';
+  src: url('/src/public/fonts/quran/hafs/me_quran/me_quran-2.ttf')
+    format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'nastaleeq';
+  src: url('/src/public/fonts/quran/hafs/nastaleeq/indopak/indopak-nastaleeq-waqf-lazim-v4.2.1.ttf')
+    format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'surahNames';
+  src: url('/src/public/fonts/quran/surah-names/v1/sura_names.ttf')
+    format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: '_PDMS_Saleem_QuranFont';
+  src: url('/src/public/fonts/quran/hafs/_PDMS_Saleem_QuranFont/_PDMS_Saleem_QuranFont.ttf');
+}
+
+@font-face {
+  font-family: 'Othmani';
+  src: url('/src/public/fonts/quran/hafs/Othmani/Othmani.ttf');
+}
+
+/* 
+  --------------------
+  GLOBAL STYLES
+  --------------------
+*/
+.rtl {
+  direction: rtl;
+}
+
+/*
+  --------------------
+  SURAH INFO STYLING 
+  --------------------
+*/
+.surahInfo {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.infoTextBody {
+  font-size: 1rem;
+}
+
+.infoTextBody h2 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.infoTextBody p {
+  margin-bottom: 0.8rem;
+}
+
+.infoTextBody strong {
+  font-weight: 400;
+}
+
+.infoTextBody ol {
+  list-style: decimal;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-left: 2.3rem;
+}
+
+.infoTextBody a {
+  color: #000;
+  text-decoration: underline;
+}
