@@ -1,12 +1,10 @@
-import { Suspense, lazy } from 'react';
-import { useParams, useRouteLoaderData, useNavigation } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { useParams } from 'react-router-dom';
 
 // UTILS
-import { fetchChapterInfo, fetchVersesByPage } from '../util/api/surahApi';
-import { transformVersesToLines } from '../util/dataUtils';
+import { fetchChapterInfo } from '../util/api/surahApi';
 
 // COMPONENTS
-import Page from '../components/Page';
 import SurahHeader from '../components/SurahHeader';
 import Basmalah from '../components/Basmalah';
 
@@ -14,6 +12,10 @@ import Basmalah from '../components/Basmalah';
 import '../styles/tailwind.css';
 import PageNavigationControls from '../components/PageNavigationControls';
 import { useQuery } from '@tanstack/react-query';
+import Load from '../components/Load';
+
+// LAZY LOADING COMPONENTS
+const LazyPage = lazy(() => import('../components/Page'));
 
 const Surah = () => {
   const { surahId } = useParams();
@@ -52,7 +54,9 @@ const Surah = () => {
         <SurahHeader />
         {surahInfo &&
           pagesNumbers.map(page => (
-            <Page key={page} page={page} surahId={surahId} />
+            <Suspense key={page} fallback={<Load />}>
+              <LazyPage page={page} surahId={surahId} />
+            </Suspense>
           ))}
         <PageNavigationControls surahId={surahId} />
       </div>
@@ -61,38 +65,3 @@ const Surah = () => {
 };
 
 export default Surah;
-
-export const loader = async ({ params }) => {
-  const surahId = params.surahId;
-  const data = [];
-  let name;
-  let startPage, endPage;
-  let versesCount;
-  let revelationPlace;
-  let nameSimple;
-
-  try {
-    const surahInfo = await fetchChapterInfo(surahId);
-    startPage = surahInfo.chapter.pages[0];
-    endPage = surahInfo.chapter.pages[1];
-    name = surahInfo.chapter.name_arabic;
-    versesCount = surahInfo.chapter.verses_count;
-    revelationPlace = surahInfo.chapter.revelation_place;
-    nameSimple = surahInfo.chapter.name_simple;
-  } catch (error) {
-    throw new Error('Failed to load data');
-  }
-
-  for (let i = startPage; i <= endPage; i++) {
-    try {
-      const resData = await fetchVersesByPage(i);
-      const arrLines = transformVersesToLines(resData.verses, surahId);
-      if (arrLines) {
-        data.push([arrLines]);
-      }
-    } catch (error) {
-      throw new Error('Failed to load data for page ' + i);
-    }
-  }
-  return { data, name, nameSimple, versesCount, revelationPlace };
-};

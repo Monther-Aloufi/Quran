@@ -1,13 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 
+// COMPONENTS
+import Load from './Load';
+
+// API
 import { fetchVersesByPage } from '../util/api/surahApi';
 import { transformVersesToLines } from '../util/dataUtils';
 
+// STYLES
 import '../styles/tailwind.css';
 
 const Page = ({ page: pageNumber, surahId }) => {
   const justify =
-    surahId === '1' || surahId === '2' ? 'centerPage' : 'justifyPage';
+    pageNumber === 1 || pageNumber === 2
+      ? 'justify-center gap-0'
+      : 'justify-between';
   let content;
 
   const {
@@ -21,7 +28,7 @@ const Page = ({ page: pageNumber, surahId }) => {
   });
 
   if (isLoading) {
-    content = <h1>Loading...</h1>;
+    content = <Load />;
   }
 
   if (isError) {
@@ -33,15 +40,17 @@ const Page = ({ page: pageNumber, surahId }) => {
     content = (
       <>
         {page.map((line, i) => (
-          <span key={i} className="line flex gap-1  leading-10 font-uthmainc">
+          <span
+            key={i}
+            className={`flex gap-0.5 text-3xl leading-10 font-Othmani ${justify}`}
+          >
             {line.map((word, i) => (
               <span
                 key={i}
-                className={`${
-                  word.char_type_name === 'end'
-                    ? 'text-[2rem] font-uthmainc'
-                    : ''
-                }`}
+                className={` cursor-pointer hover:text-primary 
+                            ${word.char_type_name === 'end' && 'font-uthmainc'}
+                            ${word.verse_number}
+                          `}
               >
                 {word.text_uthmani}
               </span>
@@ -53,12 +62,12 @@ const Page = ({ page: pageNumber, surahId }) => {
   }
 
   return (
-    <p className={`${justify}  w-full rtl p-4 text-[4vh] border-b pb-4  `}>
+    <div className={`w-[95%] rtl p-4 text-[4vh] border-b pb-4  `}>
       {content}
       <span className="flex justify-center text-sm text-gray-400 pt-2">
         {pageNumber}
       </span>
-    </p>
+    </div>
   );
 };
 

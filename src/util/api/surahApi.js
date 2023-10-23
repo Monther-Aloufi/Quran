@@ -24,7 +24,7 @@ export const fetchChapterInfo = async surahId => {
   return surahInfoRes.json();
 };
 
-// Get verses for a range of pages from the API
+// Get verses by page from the API
 export const fetchVersesByPage = async pageNumber => {
   const response = await fetch(
     `https://api.quran.com/api/v4/verses/by_page/${pageNumber}?language=en&words=true&per_page=all&fields=text_uthmani&word_fields=text_uthmani&line_fields=text_uthmani`,

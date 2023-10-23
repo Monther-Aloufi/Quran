@@ -15,8 +15,6 @@ const HomePage = () => {
     queryFn: fetchChapters,
   });
 
-  console.log('data', data);
-
   let content;
 
   if (isLoading) {

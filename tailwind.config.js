@@ -19,6 +19,8 @@ module.exports = {
         meQuran: ['meQuran', 'sans-serif'],
         nastaleeq: ['nastaleeq', 'sans-serif'],
         surahNames: ['surahNames', 'sans-serif'],
+        Saleem_QuranFont: ['_PDMS_Saleem_QuranFont', 'sans-serif'],
+        Othmani: ['Othmani', 'sans-serif'],
       },
       colors: {
         primary: '#2ca4ab',

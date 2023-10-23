@@ -15,6 +15,7 @@ import makkah from '../public/images/makkah.jpg';
 // ICONS
 import west from '../public/icons/west.svg';
 import { useQuery } from '@tanstack/react-query';
+import Load from '../components/Load';
 
 const SurahInfo = () => {
   const { surahId } = useParams();
@@ -43,7 +44,7 @@ const SurahInfo = () => {
   });
 
   if (isLoading) {
-    content = <h1>Loading...</h1>;
+    content = <Load />;
   }
 
   if (isError) {

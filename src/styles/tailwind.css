@@ -34,6 +34,16 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: '_PDMS_Saleem_QuranFont';
+  src: url('/src/public/fonts/quran/hafs/_PDMS_Saleem_QuranFont/_PDMS_Saleem_QuranFont.ttf');
+}
+
+@font-face {
+  font-family: 'Othmani';
+  src: url('/src/public/fonts/quran/hafs/Othmani/Othmani.ttf');
+}
+
 /* 
   --------------------
   GLOBAL STYLES
@@ -45,23 +55,6 @@
 
 /*
   --------------------
-  PAGE STYLING 
-  --------------------
-*/
-.centerPage .line {
-  justify-content: space-between;
-}
-
-.centerPage:first-of-type .line {
-  justify-content: center;
-}
-
-.justifyPage .line {
-  justify-content: space-between;
-}
-
-/*
-  --------------------
   SURAH INFO STYLING 
   --------------------
 */
@@ -69,8 +62,6 @@
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  /* padding: 0 100px; */
-  /* margin: 0 5rem; */
 }
 
 .infoTextBody {
