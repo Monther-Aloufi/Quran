@@ -16,3 +16,16 @@ export const transformVersesToLines = (verses, surahId) => {
 
   return Object.values(lines);
 };
+
+export const transformWordsToLines = words => {
+  let lineNumber = words[0].line_number;
+  const lines = {};
+  words.forEach(word => {
+    if (word.line_number !== lineNumber) {
+      lineNumber = word.line_number;
+    }
+    lines[lineNumber] = lines[lineNumber] || [];
+    lines[lineNumber].push(word);
+  });
+  return Object.values(lines);
+};

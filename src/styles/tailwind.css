@@ -53,6 +53,10 @@
   direction: rtl;
 }
 
+.ltr {
+  direction: ltr;
+}
+
 /*
   --------------------
   SURAH INFO STYLING 
